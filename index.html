@@ -873,13 +873,25 @@
                 );
 
             function openPatientChart(patient) {
-            APPLINK(
+                openChart(
+                    patient.personId,
+                    patient.encntrId
+                );
+                }
+
+            function openChart(personId, encntrId, tabName = "") {
+                APPLINK(
                     0,
-                    "Powerchart.exe",
-                    "/PERSONID=" + patient.personId +
-                    " /ENCNTRID=" + patient.encntrId
-                    );
-                }                
+                        "Powerchart.exe",
+                        "/PERSONID=" + personId +
+                        " /ENCNTRID=" + encntrId +
+                    (
+                        tabName.trim() !== ""
+                            ? " /FIRSTTAB=^" + tabName + "^"
+                            : ""
+                    )
+                );
+            }                
 
             renderPatients(
                 filteredPatients
