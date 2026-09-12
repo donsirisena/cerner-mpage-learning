@@ -54,6 +54,16 @@
     z-index: 1000;
     }
 
+    .page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    }
+
+    .page-logo {
+    height: 50px;
+    width: auto;
+    }
 
     .page-header h1 {
         margin: 0;
@@ -274,7 +284,8 @@
         z-index: 100;
     }
 
-   
+  
+
 .resize-handle {
     position: absolute;
 
@@ -416,15 +427,14 @@
 
 <body>
 
-    <div class="page-header">
+<div class="page-header">
+    <img src="logo.png" alt="Organization logo" class="page-logo">
 
+    <div>
         <h1>Patient Diagnosis</h1>
-
-        <p>
-            MRD Mpage Test Project
-        </p>
-
+        <p>MRD Mpage Test Project</p>
     </div>
+</div>
 
 
     <div class="container">
