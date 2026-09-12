@@ -242,10 +242,10 @@
        ========================= */
 
     table {
-        width: 100%;
-        border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
     }
-
 
     th {
 
@@ -265,6 +265,27 @@
         cursor: default;
     }
 
+    th.resizable {
+    position: relative;
+}
+
+.resize-handle {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 6px;
+    height: 100%;
+
+    cursor: col-resize;
+
+    user-select: none;
+}
+
+.resize-handle:hover {
+    background-color: rgba(47, 117, 181, 0.25);
+}
 
     th.sortable {
         cursor: pointer;
@@ -391,10 +412,10 @@
 
     <div class="page-header">
 
-        <h1>Patient Discharge Diagnosis</h1>
+        <h1>Patient List</h1>
 
         <p>
-            MRD MPage Test Project
+            Cerner MPage Learning Project (MRD)
         </p>
 
     </div>
@@ -465,24 +486,37 @@
 
             <tr>
 
-                <th
-                    id="nameHeader"
-                    class="sortable"
-                >
-                    Patient Name ↕
-                </th>
+             <tr>
 
-                <th>
-                    MRN
-                </th>
+    <th
+    id="nameHeader"
+    class="sortable resizable"
+>
+    Patient Name
+    <span id="nameSortIndicator">↕</span>
+    <span class="resize-handle"></span>
+    </th>
 
-                <th>
-                    Age
-                </th>
+    <th class="resizable">
+        MRN
+        <span class="resize-handle"></span>
+    </th>
 
-                <th>
-                    Diagnosis
-                </th>
+    <th class="resizable">
+        Age
+        <span class="resize-handle"></span>
+    </th>
+
+    <th
+    id="diagnosisHeader"
+    class="sortable resizable"
+>
+    Diagnosis
+    <span id="diagnosisSortIndicator">↕</span>
+    <span class="resize-handle"></span>
+    </th>
+
+</tr>   
 
             </tr>
 
@@ -525,6 +559,15 @@
 
         let sortAscending = true;
 
+        const nameSortIndicator =
+            document.getElementById(
+                "nameSortIndicator"
+            );
+
+        const diagnosisSortIndicator =
+            document.getElementById(
+                "diagnosisSortIndicator"
+            );
 
         const tableBody =
             document.getElementById(
@@ -549,6 +592,8 @@
                 "nameHeader"
             );
 
+        const diagnosisHeader =
+            document.getElementById("diagnosisHeader");
 
         const refreshButton =
             document.getElementById(
@@ -882,43 +927,198 @@
         );
 
 
-        nameHeader.addEventListener(
-            "click",
-            function() {
+    nameHeader.addEventListener(
+    "click",
+    function() {
 
-                data.patients.sort(
-                    function(a, b) {
+        data.patients.sort(
+            function(a, b) {
 
-                        if (
-                            sortAscending
-                        ) {
+                if (sortAscending) {
 
-                            return a.name.localeCompare(
-                                b.name
-                            );
+                    return a.name.localeCompare(
+                        b.name
+                    );
 
-                        }
+                }
 
-                        else {
+                else {
 
-                            return b.name.localeCompare(
-                                a.name
-                            );
+                    return b.name.localeCompare(
+                        a.name
+                    );
 
-                        }
-
-                    }
-                );
-
-
-                sortAscending =
-                    !sortAscending;
-
-
-                filterPatients();
+                }
 
             }
         );
+
+
+        if (sortAscending) {
+
+            nameSortIndicator.textContent =
+                "▲";
+
+        }
+
+        else {
+
+            nameSortIndicator.textContent =
+                "▼";
+
+        }
+
+
+        diagnosisSortIndicator.textContent =
+            "↕";
+
+
+        sortAscending =
+            !sortAscending;
+
+
+        filterPatients();
+
+    }
+    );
+    diagnosisHeader.addEventListener(
+    "click",
+    function() {
+
+        data.patients.sort(
+            function(a, b) {
+
+                if (sortAscending) {
+
+                    return a.diagnosis.localeCompare(
+                        b.diagnosis
+                    );
+
+                }
+
+                else {
+
+                    return b.diagnosis.localeCompare(
+                        a.diagnosis
+                    );
+
+                }
+
+            }
+        );
+
+
+        if (sortAscending) {
+
+            diagnosisSortIndicator.textContent =
+                "▲";
+
+        }
+
+        else {
+
+            diagnosisSortIndicator.textContent =
+                "▼";
+
+        }
+
+
+        nameSortIndicator.textContent =
+            "↕";
+
+
+        sortAscending =
+            !sortAscending;
+
+
+        filterPatients();
+
+    }
+    );
+
+    const resizableHeaders =
+    document.querySelectorAll(
+        "th.resizable"
+    );
+
+
+resizableHeaders.forEach(
+    function(header) {
+
+        const handle =
+            header.querySelector(
+                ".resize-handle"
+            );
+
+
+        handle.addEventListener(
+            "mousedown",
+            function(event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+
+                const startX =
+                    event.pageX;
+
+
+                const startWidth =
+                    header.offsetWidth;
+
+
+                function resizeColumn(event) {
+
+                    const newWidth =
+                        startWidth +
+                        (
+                            event.pageX -
+                            startX
+                        );
+
+
+                    if (newWidth > 70) {
+
+                        header.style.width =
+                            newWidth + "px";
+
+                    }
+
+                }
+
+
+                function stopResize() {
+
+                    document.removeEventListener(
+                        "mousemove",
+                        resizeColumn
+                    );
+
+
+                    document.removeEventListener(
+                        "mouseup",
+                        stopResize
+                    );
+
+                }
+
+
+                document.addEventListener(
+                    "mousemove",
+                    resizeColumn
+                );
+
+
+                document.addEventListener(
+                    "mouseup",
+                    stopResize
+                );
+
+            }
+        );
+
+    }
+);
 
 
         loadPatients();
