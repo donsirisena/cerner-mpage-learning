@@ -12,152 +12,352 @@
 
     <title>Patient List MPage</title>
 
-    <style>
+ <style>
 
-        * {
-            box-sizing: border-box;
-        }
+    /* Makes sizing of all elements more predictable */
+    * {
+        box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            color: #222;
-        }
 
-        .page-header {
-            background-color: #ffffff;
-            border-bottom: 1px solid #d8dde3;
-            padding: 18px 24px;
-        }
+    /* =========================
+       MAIN PAGE
+       ========================= */
 
-        .page-header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #eef2f6;
+        color: #263238;
+    }
 
-        .page-header p {
-            margin: 5px 0 0 0;
-            color: #666;
-            font-size: 14px;
-        }
 
-        .container {
-            padding: 20px 24px;
-        }
+    /* =========================
+       PAGE HEADER
+       ========================= */
 
-        .toolbar {
-            background-color: white;
-            border: 1px solid #d8dde3;
-            padding: 14px;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
+    .page-header {
+        background: linear-gradient(
+            90deg,
+            #1f4e79,
+            #2f75b5
+        );
 
-        .toolbar label {
-            font-size: 13px;
-            font-weight: bold;
-        }
+        color: white;
+        padding: 20px 26px;
 
-        .toolbar input,
-        .toolbar select {
-            padding: 8px 10px;
-            border: 1px solid #bfc6ce;
-            border-radius: 3px;
-            font-size: 14px;
-            min-width: 190px;
-        }
+        box-shadow:
+            0 2px 6px rgba(0, 0, 0, 0.18);
+    }
 
-        .toolbar button {
-            padding: 8px 14px;
-            border: 1px solid #aeb6bf;
-            background-color: #ffffff;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 14px;
-        }
 
-        .toolbar button:hover {
-            background-color: #f0f2f4;
-        }
+    .page-header h1 {
+        margin: 0;
+        font-size: 25px;
+        font-weight: 600;
+    }
 
-        .status {
-            margin-bottom: 12px;
-            font-size: 13px;
-            color: #555;
-        }
 
-        .table-card {
-            background-color: white;
-            border: 1px solid #d8dde3;
-        }
+    .page-header p {
+        margin: 6px 0 0 0;
+        color: #dceaf7;
+        font-size: 14px;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
 
-        th {
-            background-color: #eef1f4;
-            border-bottom: 1px solid #c9d0d7;
-            padding: 10px;
-            text-align: left;
-            font-size: 13px;
-            cursor: default;
-        }
+    /* =========================
+       MAIN CONTENT AREA
+       ========================= */
 
-        th.sortable {
-            cursor: pointer;
-        }
+    .container {
+        padding: 20px 24px;
+    }
 
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #e2e6ea;
-            font-size: 14px;
-        }
 
-        tbody tr {
-            cursor: pointer;
-        }
+    /* =========================
+       SEARCH / FILTER TOOLBAR
+       ========================= */
 
-        tbody tr:hover {
-            background-color: #f5f9fc;
-        }
+    .toolbar {
+        background-color: #ffffff;
 
-        .details-card {
-            margin-top: 18px;
-            background-color: white;
-            border: 1px solid #d8dde3;
-            padding: 16px;
-        }
+        border: 1px solid #d2dbe4;
+        border-radius: 6px;
 
-        .details-card h2 {
-            margin-top: 0;
-            font-size: 18px;
-        }
+        padding: 16px;
 
-        .details-grid {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            row-gap: 8px;
-            font-size: 14px;
-        }
+        display: flex;
+        gap: 14px;
 
-        .details-label {
-            font-weight: bold;
-            color: #555;
-        }
+        align-items: center;
+        flex-wrap: wrap;
 
-        .empty-message {
-            padding: 18px;
-            text-align: center;
-            color: #777;
-        }
+        margin-bottom: 16px;
 
-    </style>
+        box-shadow:
+            0 2px 7px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .toolbar label {
+        font-size: 13px;
+        font-weight: bold;
+        color: #37474f;
+    }
+
+
+    .toolbar input,
+    .toolbar select {
+
+        padding: 9px 11px;
+
+        border: 1px solid #b8c4ce;
+        border-radius: 4px;
+
+        font-size: 14px;
+
+        min-width: 200px;
+
+        background-color: #ffffff;
+    }
+
+
+    .toolbar input:focus,
+    .toolbar select:focus {
+
+        outline: none;
+
+        border-color: #2f75b5;
+
+        box-shadow:
+            0 0 0 2px rgba(47, 117, 181, 0.15);
+    }
+
+
+    /* =========================
+       REFRESH BUTTON
+       ========================= */
+
+    .toolbar button {
+
+        padding: 9px 17px;
+
+        border: none;
+        border-radius: 4px;
+
+        background-color: #2f75b5;
+        color: white;
+
+        font-size: 14px;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+
+    .toolbar button:hover {
+        background-color: #245d91;
+    }
+
+
+    .toolbar button:active {
+
+        background-color: #1f4e79;
+
+        transform: translateY(1px);
+    }
+
+
+    /* =========================
+       STATUS MESSAGE
+       ========================= */
+
+    .status {
+
+        margin-bottom: 14px;
+
+        padding: 9px 12px;
+
+        background-color: #e8f4ea;
+
+        border-left: 4px solid #4d9658;
+
+        border-radius: 3px;
+
+        color: #365b3c;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================
+       TABLE CONTAINER
+       ========================= */
+
+    .table-card {
+
+        background-color: #ffffff;
+
+        border: 1px solid #d2dbe4;
+
+        border-radius: 6px;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.09);
+    }
+
+
+    /* =========================
+       PATIENT TABLE
+       ========================= */
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+
+    th {
+
+        background-color: #dce6f1;
+
+        color: #263f56;
+
+        border-bottom: 1px solid #b8c5d1;
+
+        padding: 11px 12px;
+
+        text-align: left;
+
+        font-size: 13px;
+        font-weight: bold;
+
+        cursor: default;
+    }
+
+
+    th.sortable {
+        cursor: pointer;
+    }
+
+
+    th.sortable:hover {
+        background-color: #ceddeb;
+    }
+
+
+    td {
+
+        padding: 10px 12px;
+
+        border-bottom: 1px solid #e0e6eb;
+
+        font-size: 14px;
+    }
+
+
+    /* Alternating row colour */
+
+    tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+
+
+    /* Row mouse hover */
+
+    tbody tr {
+        cursor: pointer;
+
+        transition:
+            background-color 0.15s ease;
+    }
+
+
+    tbody tr:hover {
+        background-color: #e6f1fa;
+    }
+
+
+    /* =========================
+       PATIENT DETAILS CARD
+       ========================= */
+
+    .details-card {
+
+        margin-top: 18px;
+
+        background-color: #ffffff;
+
+        border: 1px solid #d2dbe4;
+
+        border-radius: 6px;
+
+        padding: 18px;
+
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .details-card h2 {
+
+        margin-top: 0;
+        margin-bottom: 16px;
+
+        font-size: 18px;
+
+        color: #1f4e79;
+
+        padding-bottom: 8px;
+
+        border-bottom: 1px solid #e0e6eb;
+    }
+
+
+    /* Patient details two-column layout */
+
+    .details-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            150px 1fr;
+
+        row-gap: 10px;
+
+        font-size: 14px;
+    }
+
+
+    .details-label {
+
+        font-weight: bold;
+
+        color: #546e7a;
+    }
+
+
+    /* =========================
+       NO PATIENTS MESSAGE
+       ========================= */
+
+    .empty-message {
+
+        padding: 22px;
+
+        text-align: center;
+
+        color: #78909c;
+
+        background-color: #fafbfc;
+    }
+
+
+</style>
 
 </head>
 
@@ -168,7 +368,7 @@
         <h1>Patient List</h1>
 
         <p>
-            MRD Cerner MPage Learning Project
+            Cerner MPage Learning Project (MRD)
         </p>
 
     </div>
