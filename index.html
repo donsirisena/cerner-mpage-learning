@@ -864,6 +864,28 @@
         }
 
 
+        function setDefaultDates() {
+            const today = new Date();
+            const lastDayOfPreviousMonth = new Date(
+                today.getFullYear(), today.getMonth(), 0
+            );
+            const fromDate = new Date(
+                lastDayOfPreviousMonth.getFullYear(),
+                lastDayOfPreviousMonth.getMonth(),
+                Math.min(today.getDate(), lastDayOfPreviousMonth.getDate())
+            );
+
+            function formatInputDate(date) {
+                return date.getFullYear() + "-" +
+                    ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
+                    ("0" + date.getDate()).slice(-2);
+            }
+
+            document.getElementById("toDate").value = formatInputDate(today);
+            document.getElementById("fromDate").value = formatInputDate(fromDate);
+        }
+
+
         function formatDateForCCL(dateValue, timeValue) {
             const months = [
                 "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
@@ -1225,6 +1247,7 @@ resizableHeaders.forEach(
 );
 
 
+        setDefaultDates();
         loadPatients();
 
 
