@@ -470,6 +470,22 @@
 
 
             <div>
+                <label for="fromDate">From Date</label>
+                <br>
+
+                <input type="date" id="fromDate" required>
+            </div>
+
+
+            <div>
+                <label for="toDate">To Date</label>
+                <br>
+
+                <input type="date" id="toDate" required>
+            </div>
+
+
+            <div>
                 <label>&nbsp;</label>
                 <br>
 
@@ -848,7 +864,46 @@
         }
 
 
+        function formatDateForCCL(dateValue, timeValue) {
+            const months = [
+                "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+            ];
+            const parts = dateValue.split("-");
+
+            // Format the selected calendar date without timezone conversion.
+            return parts[2] + "-" + months[Number(parts[1]) - 1] + "-" +
+                parts[0] + " " + timeValue;
+        }
+
+
         function loadPatients() {
+
+            const fromDateInput = document.getElementById("fromDate");
+            const toDateInput = document.getElementById("toDate");
+            const fromDate = fromDateInput.value;
+            const toDate = toDateInput.value;
+
+            if (!fromDate || !toDate) {
+                statusMessage.textContent =
+                    "Please enter both From Date and To Date.";
+                return;
+            }
+
+            if (!fromDateInput.checkValidity() || !toDateInput.checkValidity()) {
+                statusMessage.textContent = "Please enter valid dates.";
+                return;
+            }
+
+            // Date controls return YYYY-MM-DD, which sorts chronologically.
+            if (fromDate > toDate) {
+                statusMessage.textContent =
+                    "From Date must not be after To Date.";
+                return;
+            }
+
+            const formattedFromDate = formatDateForCCL(fromDate, "00:00:00");
+            const formattedToDate = formatDateForCCL(toDate, "23:59:59");
 
             statusMessage.textContent =
                 "Loading patients...";
@@ -919,7 +974,11 @@
 
 
             request.send(
-                "^MINE^"
+             "^MINE^,^" +
+                    formattedFromDate +
+                        "^,^" +
+                        formattedToDate +
+                        "^"
             );
 
         }
