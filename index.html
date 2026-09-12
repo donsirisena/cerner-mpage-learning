@@ -24,8 +24,18 @@
        MAIN PAGE
        ========================= */
 
+    html,
     body {
+        height: 100%;
         margin: 0;
+        overflow: hidden;
+    }
+
+
+    body {
+        display: flex;
+        flex-direction: column;
+
         font-family: Arial, sans-serif;
         background-color: #eef2f6;
         color: #263238;
@@ -37,36 +47,40 @@
        ========================= */
 
     .page-header {
-    background: linear-gradient(
-        90deg,
-        #1f4e79,
-        #2f75b5
-    );
+        background: linear-gradient(
+            90deg,
+            #1f4e79,
+            #2f75b5
+        );
 
-    color: white;
-    padding: 20px 26px;
+        color: white;
 
-    box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.18);
+        padding: 20px 26px;
 
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+        box-shadow:
+            0 2px 6px rgba(0, 0, 0, 0.18);
+
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        /*
+           Prevents the header from shrinking.
+           The overall page itself no longer scrolls.
+        */
+        flex-shrink: 0;
     }
 
-    .page-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    }
 
     .page-logo {
-    height: 50px;
-    width: auto;
+        height: 50px;
+        width: auto;
     }
+
 
     .page-header h1 {
         margin: 0;
+
         font-size: 25px;
         font-weight: 600;
     }
@@ -74,7 +88,9 @@
 
     .page-header p {
         margin: 6px 0 0 0;
+
         color: #dceaf7;
+
         font-size: 14px;
     }
 
@@ -84,7 +100,21 @@
        ========================= */
 
     .container {
+        flex: 1;
+
+        /*
+           Very important for flex layouts.
+           Allows the table area to shrink and scroll
+           instead of making the whole page scroll.
+        */
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
         padding: 20px 24px;
+
+        overflow: hidden;
     }
 
 
@@ -110,19 +140,21 @@
 
         box-shadow:
             0 2px 7px rgba(0, 0, 0, 0.08);
+
+        flex-shrink: 0;
     }
 
 
     .toolbar label {
         font-size: 13px;
         font-weight: bold;
+
         color: #37474f;
     }
 
 
     .toolbar input,
     .toolbar select {
-
         padding: 9px 11px;
 
         border: 1px solid #b8c4ce;
@@ -138,7 +170,6 @@
 
     .toolbar input:focus,
     .toolbar select:focus {
-
         outline: none;
 
         border-color: #2f75b5;
@@ -153,7 +184,6 @@
        ========================= */
 
     .toolbar button {
-
         padding: 9px 17px;
 
         border: none;
@@ -177,7 +207,6 @@
 
 
     .toolbar button:active {
-
         background-color: #1f4e79;
 
         transform: translateY(1px);
@@ -189,7 +218,6 @@
        ========================= */
 
     .status {
-
         margin-bottom: 14px;
 
         padding: 9px 12px;
@@ -203,6 +231,8 @@
         color: #365b3c;
 
         font-size: 13px;
+
+        flex-shrink: 0;
     }
 
 
@@ -211,182 +241,210 @@
        ========================= */
 
     .table-card {
-
         background-color: #ffffff;
 
         border: 1px solid #d2dbe4;
-
         border-radius: 6px;
-
-        overflow: hidden;
 
         box-shadow:
             0 2px 8px rgba(0, 0, 0, 0.09);
+
+        /*
+           Table card receives all remaining
+           vertical space in the MPage.
+        */
+        flex: 1;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
     }
-.table-title {
-    padding: 12px 14px;
 
-    background-color: #f5f8fb;
 
-    border-bottom: 1px solid #d2dbe4;
+    .table-title {
+        padding: 12px 14px;
 
-    color: #1f4e79;
+        background-color: #f5f8fb;
 
-    font-size: 14px;
-    font-weight: bold;
+        border-bottom: 1px solid #d2dbe4;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        color: #1f4e79;
 
-#patientCount {
-    background-color: #2f75b5;
-    color: white;
+        font-size: 14px;
+        font-weight: bold;
 
-    padding: 4px 9px;
-    border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-    font-size: 12px;
-    font-weight: normal;
-}
+        flex-shrink: 0;
+    }
+
+
+    #patientCount {
+        background-color: #2f75b5;
+        color: white;
+
+        padding: 4px 9px;
+
+        border-radius: 12px;
+
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+
+    /* =========================
+       PATIENT TABLE SCROLL AREA
+       ========================= */
+
+    /*
+       ONLY this area scrolls.
+
+       The toolbar, status message,
+       Patient Results title and table
+       column headings remain visible.
+    */
+    .table-scroll {
+        flex: 1;
+        min-height: 0;
+
+        overflow: auto;
+    }
+
 
     /* =========================
        PATIENT TABLE
        ========================= */
 
+    table {
+        width: auto;
+        min-width: 100%;
+
+        border-collapse: collapse;
+
+        table-layout: fixed;
+    }
+
+
+    /* Table column headers */
+
+    th {
+        background-color: #dce6f1;
+
+        color: #263f56;
+
+        border-bottom: 1px solid #b8c5d1;
+
+        padding: 11px 12px;
+
+        text-align: left;
+
+        font-size: 13px;
+        font-weight: bold;
+
+        cursor: default;
+
+        /*
+           Header sticks to the top of
+           the table-scroll container.
+        */
+        position: sticky;
+        top: 0;
+
+        z-index: 100;
+    }
+
+
     /* =========================
-   PATIENT TABLE
-   ========================= */
+       COLUMN RESIZE HANDLE
+       ========================= */
 
-/*
-   This becomes the scrolling area.
-   The controls/status/table title above it remain in place,
-   while the patient rows scroll inside this container.
-*/
-.table-scroll {
-    max-height: calc(100vh - 260px);
-    overflow-y: auto;
-    overflow-x: auto;
-}
+    .resize-handle {
+        position: absolute;
 
+        top: 0;
+        right: 0;
 
-/* Main table */
-table {
-    width: auto;
-    min-width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
+        width: 6px;
+        height: 100%;
+
+        cursor: col-resize;
+
+        user-select: none;
+    }
 
 
-/* Table column headers */
-th {
-    background-color: #dce6f1;
-
-    color: #263f56;
-
-    border-bottom: 1px solid #b8c5d1;
-
-    padding: 11px 12px;
-
-    text-align: left;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    cursor: default;
-
-    /*
-       Keeps the table header frozen while
-       the patient rows scroll underneath it.
-    */
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
+    .resize-handle:hover {
+        background-color: rgba(47, 117, 181, 0.25);
+    }
 
 
-/* =========================
-   COLUMN RESIZE HANDLE
-   ========================= */
+    /* =========================
+       SORTABLE HEADERS
+       ========================= */
 
-.resize-handle {
-    position: absolute;
-
-    top: 0;
-    right: 0;
-
-    width: 6px;
-    height: 100%;
-
-    cursor: col-resize;
-
-    user-select: none;
-}
+    th.sortable {
+        cursor: pointer;
+    }
 
 
-.resize-handle:hover {
-    background-color: rgba(47, 117, 181, 0.25);
-}
+    th.sortable:hover {
+        background-color: #ceddeb;
+    }
 
 
-/* =========================
-   SORTABLE HEADERS
-   ========================= */
+    /* =========================
+       TABLE CELLS
+       ========================= */
 
-th.sortable {
-    cursor: pointer;
-}
+    td {
+        padding: 10px 12px;
 
+        border-bottom: 1px solid #e0e6eb;
 
-th.sortable:hover {
-    background-color: #ceddeb;
-}
-
-
-/* =========================
-   TABLE CELLS
-   ========================= */
-
-td {
-    padding: 10px 12px;
-
-    border-bottom: 1px solid #e0e6eb;
-
-    font-size: 13px;
-}
-
-.patient-link {
-    color: #1f5f99;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.patient-link:hover {
-    text-decoration: none;
-}
-
-/* Alternating row colour */
-
-tbody tr:nth-child(even) {
-    background-color: #f8fafc;
-}
+        font-size: 13px;
+    }
 
 
-/* Row mouse hover */
+    /* Patient name hyperlink */
 
-tbody tr {
-    cursor: pointer;
+    .patient-link {
+        color: #1f5f99;
 
-    transition:
-        background-color 0.15s ease;
-}
+        text-decoration: none;
+
+        font-weight: 600;
+    }
 
 
-tbody tr:hover {
-    background-color: #e6f1fa;
-}
+    .patient-link:hover {
+        text-decoration: none;
+    }
+
+
+    /* Alternating row colour */
+
+    tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+
+
+    /* Row mouse hover */
+
+    tbody tr {
+        cursor: pointer;
+
+        transition:
+            background-color 0.15s ease;
+    }
+
+
+    tbody tr:hover {
+        background-color: #e6f1fa;
+    }
 
 
     /* =========================
@@ -394,24 +452,23 @@ tbody tr:hover {
        ========================= */
 
     .details-card {
-
         margin-top: 18px;
 
         background-color: #ffffff;
 
         border: 1px solid #d2dbe4;
-
         border-radius: 6px;
 
         padding: 18px;
 
         box-shadow:
             0 2px 8px rgba(0, 0, 0, 0.08);
+
+        flex-shrink: 0;
     }
 
 
     .details-card h2 {
-
         margin-top: 0;
         margin-bottom: 16px;
 
@@ -428,7 +485,6 @@ tbody tr:hover {
     /* Patient details two-column layout */
 
     .details-grid {
-
         display: grid;
 
         grid-template-columns:
@@ -441,7 +497,6 @@ tbody tr:hover {
 
 
     .details-label {
-
         font-weight: bold;
 
         color: #546e7a;
@@ -453,7 +508,6 @@ tbody tr:hover {
        ========================= */
 
     .empty-message {
-
         padding: 22px;
 
         text-align: center;
@@ -463,8 +517,9 @@ tbody tr:hover {
         background-color: #fafbfc;
     }
 
+</style> 
 
-</style>
+
 
 </head>
 
