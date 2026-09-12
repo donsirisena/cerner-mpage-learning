@@ -10,57 +10,276 @@
         name="discern"
     >
 
-    <title>My First Cerner MPage</title>
+    <title>Patient List MPage</title>
 
     <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f4f6f8;
+            color: #222;
+        }
+
+        .page-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #d8dde3;
+            padding: 18px 24px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .page-header p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 20px 24px;
+        }
+
+        .toolbar {
+            background-color: white;
+            border: 1px solid #d8dde3;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .toolbar label {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            padding: 8px 10px;
+            border: 1px solid #bfc6ce;
+            border-radius: 3px;
+            font-size: 14px;
+            min-width: 190px;
+        }
+
+        .toolbar button {
+            padding: 8px 14px;
+            border: 1px solid #aeb6bf;
+            background-color: #ffffff;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toolbar button:hover {
+            background-color: #f0f2f4;
+        }
+
+        .status {
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .table-card {
+            background-color: white;
+            border: 1px solid #d8dde3;
         }
 
         table {
-            border-collapse: collapse;
             width: 100%;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
+            border-collapse: collapse;
         }
 
         th {
-            background-color: #eee;
+            background-color: #eef1f4;
+            border-bottom: 1px solid #c9d0d7;
+            padding: 10px;
+            text-align: left;
+            font-size: 13px;
+            cursor: default;
         }
+
+        th.sortable {
+            cursor: pointer;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #e2e6ea;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background-color: #f5f9fc;
+        }
+
+        .details-card {
+            margin-top: 18px;
+            background-color: white;
+            border: 1px solid #d8dde3;
+            padding: 16px;
+        }
+
+        .details-card h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            row-gap: 8px;
+            font-size: 14px;
+        }
+
+        .details-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .empty-message {
+            padding: 18px;
+            text-align: center;
+            color: #777;
+        }
+
     </style>
 
 </head>
 
 <body>
 
-    <h1>My First Cerner MPage</h1>
+    <div class="page-header">
 
-    <p id="statusMessage">
-        Waiting to load patients...
-    </p>
+        <h1>Patient List</h1>
 
-    <table>
+        <p>
+            MRD Cerner MPage Learning Project
+        </p>
 
-        <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>MRN</th>
-                <th>Age</th>
-                <th>Diagnosis</th>
-            </tr>
-        </thead>
+    </div>
 
-        <tbody id="patientTableBody">
-        </tbody>
 
-    </table>
+    <div class="container">
+
+        <div class="toolbar">
+
+            <div>
+                <label for="searchBox">
+                    Search Patient
+                </label>
+                <br>
+
+                <input
+                    type="text"
+                    id="searchBox"
+                    placeholder="Start typing a name..."
+                >
+            </div>
+
+
+            <div>
+                <label for="diagnosisFilter">
+                    Diagnosis
+                </label>
+                <br>
+
+                <select id="diagnosisFilter">
+                    <option value="all">
+                        All Diagnoses
+                    </option>
+                </select>
+            </div>
+
+
+            <div>
+                <label>&nbsp;</label>
+                <br>
+
+                <button id="refreshButton">
+                    Refresh
+                </button>
+            </div>
+
+        </div>
+
+
+        <div
+            id="statusMessage"
+            class="status"
+        >
+            Waiting to load patients...
+        </div>
+
+
+        <div class="table-card">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th
+                            id="nameHeader"
+                            class="sortable"
+                        >
+                            Patient Name ↕
+                        </th>
+
+                        <th>
+                            MRN
+                        </th>
+
+                        <th>
+                            Age
+                        </th>
+
+                        <th>
+                            Diagnosis
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="patientTableBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div
+            id="patientDetails"
+            class="details-card"
+        >
+
+            <h2>Patient Details</h2>
+
+            <p>
+                Select a patient from the table.
+            </p>
+
+        </div>
+
+    </div>
 
 
     <script>
@@ -69,32 +288,279 @@
             "nygh_mpage_learning:group1";
 
 
-        function renderPatients(patients) {
+        let data = {
+            patients: []
+        };
 
-            const tableBody =
-                document.getElementById("patientTableBody");
+
+        let sortAscending = true;
+
+
+        const tableBody =
+            document.getElementById(
+                "patientTableBody"
+            );
+
+
+        const searchBox =
+            document.getElementById(
+                "searchBox"
+            );
+
+
+        const diagnosisFilter =
+            document.getElementById(
+                "diagnosisFilter"
+            );
+
+
+        const nameHeader =
+            document.getElementById(
+                "nameHeader"
+            );
+
+
+        const refreshButton =
+            document.getElementById(
+                "refreshButton"
+            );
+
+
+        const statusMessage =
+            document.getElementById(
+                "statusMessage"
+            );
+
+
+        function renderPatients(patients) {
 
             tableBody.innerHTML = "";
 
-            patients.forEach(function(patient) {
+
+            if (patients.length === 0) {
 
                 const row =
                     document.createElement("tr");
 
+
                 row.innerHTML = `
-                    <td>${patient.name}</td>
-                    <td>${patient.mrn}</td>
-                    <td>${patient.age}</td>
-                    <td>${patient.diagnosis}</td>
+                    <td
+                        colspan="4"
+                        class="empty-message"
+                    >
+                        No patients found.
+                    </td>
                 `;
+
 
                 tableBody.appendChild(row);
 
-            });
+                return;
+            }
+
+
+            patients.forEach(
+                function(patient) {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+                        <td>${patient.name}</td>
+                        <td>${patient.mrn}</td>
+                        <td>${patient.age}</td>
+                        <td>${patient.diagnosis}</td>
+                    `;
+
+
+                    row.addEventListener(
+                        "click",
+                        function() {
+
+                            showPatientDetails(
+                                patient
+                            );
+
+                        }
+                    );
+
+
+                    tableBody.appendChild(row);
+
+                }
+            );
+
+        }
+
+
+        function showPatientDetails(patient) {
+
+            const details =
+                document.getElementById(
+                    "patientDetails"
+                );
+
+
+            details.innerHTML = `
+
+                <h2>Patient Details</h2>
+
+                <div class="details-grid">
+
+                    <div class="details-label">
+                        Name
+                    </div>
+
+                    <div>
+                        ${patient.name}
+                    </div>
+
+
+                    <div class="details-label">
+                        MRN
+                    </div>
+
+                    <div>
+                        ${patient.mrn}
+                    </div>
+
+
+                    <div class="details-label">
+                        Age
+                    </div>
+
+                    <div>
+                        ${patient.age}
+                    </div>
+
+
+                    <div class="details-label">
+                        Diagnosis
+                    </div>
+
+                    <div>
+                        ${patient.diagnosis}
+                    </div>
+
+                </div>
+            `;
+
+        }
+
+
+        function buildDiagnosisDropdown() {
+
+            diagnosisFilter.innerHTML = `
+                <option value="all">
+                    All Diagnoses
+                </option>
+            `;
+
+
+            const diagnoses = [];
+
+
+            data.patients.forEach(
+                function(patient) {
+
+                    if (
+                        !diagnoses.includes(
+                            patient.diagnosis
+                        )
+                    ) {
+
+                        diagnoses.push(
+                            patient.diagnosis
+                        );
+
+                    }
+
+                }
+            );
+
+
+            diagnoses.sort();
+
+
+            diagnoses.forEach(
+                function(diagnosis) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        diagnosis;
+
+
+                    option.textContent =
+                        diagnosis;
+
+
+                    diagnosisFilter.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+        }
+
+
+        function filterPatients() {
+
+            const searchText =
+                searchBox.value
+                    .toLowerCase();
+
+
+            const selectedDiagnosis =
+                diagnosisFilter.value;
+
+
+            const filteredPatients =
+                data.patients.filter(
+                    function(patient) {
+
+                        const matchesSearch =
+                            patient.name
+                                .toLowerCase()
+                                .startsWith(
+                                    searchText
+                                );
+
+
+                        const matchesDiagnosis =
+                            selectedDiagnosis === "all"
+                            ||
+                            patient.diagnosis ===
+                            selectedDiagnosis;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesDiagnosis
+                        );
+
+                    }
+                );
+
+
+            renderPatients(
+                filteredPatients
+            );
+
         }
 
 
         function loadPatients() {
+
+            statusMessage.textContent =
+                "Loading patients...";
+
 
             const request =
                 new XMLCclRequest();
@@ -104,29 +570,50 @@
                 function() {
 
                     if (
-                        request.readyState === 4 &&
+                        request.readyState === 4
+                        &&
                         request.status === 200
                     ) {
 
-                        const response =
-                            JSON.parse(
-                                request.responseText
+                        try {
+
+                            const response =
+                                JSON.parse(
+                                    request.responseText
+                                );
+
+
+                            data.patients =
+                                response
+                                    .reply
+                                    .patients
+                                || [];
+
+
+                            buildDiagnosisDropdown();
+
+
+                            filterPatients();
+
+
+                            statusMessage.textContent =
+                                "Loaded " +
+                                data.patients.length +
+                                " patients successfully.";
+
+                        }
+
+                        catch (error) {
+
+                            statusMessage.textContent =
+                                "Unable to process patient data.";
+
+                            console.error(
+                                error
                             );
 
+                        }
 
-                        const patients =
-                            response.reply.patients;
-
-
-                        renderPatients(
-                            patients
-                        );
-
-
-                        document.getElementById(
-                            "statusMessage"
-                        ).textContent =
-                            "Patients loaded successfully.";
                     }
 
                 };
@@ -142,7 +629,65 @@
             request.send(
                 "^MINE^"
             );
+
         }
+
+
+        searchBox.addEventListener(
+            "input",
+            filterPatients
+        );
+
+
+        diagnosisFilter.addEventListener(
+            "change",
+            filterPatients
+        );
+
+
+        refreshButton.addEventListener(
+            "click",
+            loadPatients
+        );
+
+
+        nameHeader.addEventListener(
+            "click",
+            function() {
+
+                data.patients.sort(
+                    function(a, b) {
+
+                        if (
+                            sortAscending
+                        ) {
+
+                            return a.name.localeCompare(
+                                b.name
+                            );
+
+                        }
+
+                        else {
+
+                            return b.name.localeCompare(
+                                a.name
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                sortAscending =
+                    !sortAscending;
+
+
+                filterPatients();
+
+            }
+        );
 
 
         loadPatients();
