@@ -255,36 +255,61 @@
        PATIENT TABLE
        ========================= */
 
-    table {
+    /* =========================
+   PATIENT TABLE
+   ========================= */
+
+/*
+   This becomes the scrolling area.
+   The controls/status/table title above it remain in place,
+   while the patient rows scroll inside this container.
+*/
+.table-scroll {
+    max-height: calc(100vh - 260px);
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+/* Main table */
+table {
     width: auto;
     min-width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    }
+}
 
-    th {
 
-        background-color: #dce6f1;
+/* Table column headers */
+th {
+    background-color: #dce6f1;
 
-        color: #263f56;
+    color: #263f56;
 
-        border-bottom: 1px solid #b8c5d1;
+    border-bottom: 1px solid #b8c5d1;
 
-        padding: 11px 12px;
+    padding: 11px 12px;
 
-        text-align: left;
+    text-align: left;
 
-        font-size: 13px;
-        font-weight: bold;
+    font-size: 13px;
+    font-weight: bold;
 
-        cursor: default;
+    cursor: default;
 
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
+    /*
+       Keeps the table header frozen while
+       the patient rows scroll underneath it.
+    */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
-  
+
+/* =========================
+   COLUMN RESIZE HANDLE
+   ========================= */
 
 .resize-handle {
     position: absolute;
@@ -300,50 +325,59 @@
     user-select: none;
 }
 
+
 .resize-handle:hover {
     background-color: rgba(47, 117, 181, 0.25);
 }
 
-    th.sortable {
-        cursor: pointer;
-    }
+
+/* =========================
+   SORTABLE HEADERS
+   ========================= */
+
+th.sortable {
+    cursor: pointer;
+}
 
 
-    th.sortable:hover {
-        background-color: #ceddeb;
-    }
+th.sortable:hover {
+    background-color: #ceddeb;
+}
 
 
-    td {
+/* =========================
+   TABLE CELLS
+   ========================= */
 
-        padding: 10px 12px;
+td {
+    padding: 10px 12px;
 
-        border-bottom: 1px solid #e0e6eb;
+    border-bottom: 1px solid #e0e6eb;
 
-        font-size: 13px;
-    }
-
-
-    /* Alternating row colour */
-
-    tbody tr:nth-child(even) {
-        background-color: #f8fafc;
-    }
+    font-size: 13px;
+}
 
 
-    /* Row mouse hover */
+/* Alternating row colour */
 
-    tbody tr {
-        cursor: pointer;
-
-        transition:
-            background-color 0.15s ease;
-    }
+tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
 
 
-    tbody tr:hover {
-        background-color: #e6f1fa;
-    }
+/* Row mouse hover */
+
+tbody tr {
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease;
+}
+
+
+tbody tr:hover {
+    background-color: #e6f1fa;
+}
 
 
     /* =========================
@@ -511,8 +545,10 @@
         <span>Patient Results</span>
         <span id="patientCount"></span>
     </div>
-
-    <table>
+ 
+ <div class="table-scroll">
+ 
+        <table>
 
         <thead>
 
@@ -558,7 +594,7 @@
         </tbody>
 
     </table>
-
+    </div>
 </div>
 
 
@@ -887,6 +923,7 @@
 
             function openChart(personId, encntrId, tabName = "") {
                 
+
                         
                 APPLINK(
                     0,
