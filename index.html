@@ -37,17 +37,21 @@
        ========================= */
 
     .page-header {
-        background: linear-gradient(
-            90deg,
-            #1f4e79,
-            #2f75b5
-        );
+    background: linear-gradient(
+        90deg,
+        #1f4e79,
+        #2f75b5
+    );
 
-        color: white;
-        padding: 20px 26px;
+    color: white;
+    padding: 20px 26px;
 
-        box-shadow:
-            0 2px 6px rgba(0, 0, 0, 0.18);
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.18);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     }
 
 
@@ -264,11 +268,15 @@
         font-weight: bold;
 
         cursor: default;
+
+        position: sticky;
+        top: 0;
+        z-index: 100;
     }
 
     th.resizable {
     position: relative;
-}
+    }
 
 .resize-handle {
     position: absolute;
@@ -416,7 +424,7 @@
         <h1>Patient Diagnosis</h1>
 
         <p>
-            MRD MPage Test Project
+            MRD Mpage Test Project
         </p>
 
     </div>
