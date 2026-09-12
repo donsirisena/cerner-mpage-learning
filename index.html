@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        http-equiv="Content-Type"
+        content="XMLCCLREQUEST,APPLINK,MPAGES_EVENT"
+        name="discern"
+    >
+
+    <title>My First Cerner MPage</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eee;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>My First Cerner MPage</h1>
+
+    <p id="statusMessage">
+        Waiting to load patients...
+    </p>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>MRN</th>
+                <th>Age</th>
+                <th>Diagnosis</th>
+            </tr>
+        </thead>
+
+        <tbody id="patientTableBody">
+        </tbody>
+
+    </table>
+
+
+    <script>
+
+        const CCL_PROGRAM =
+            "nygh_mpage_learning:group1";
+
+
+        function renderPatients(patients) {
+
+            const tableBody =
+                document.getElementById("patientTableBody");
+
+            tableBody.innerHTML = "";
+
+            patients.forEach(function(patient) {
+
+                const row =
+                    document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${patient.name}</td>
+                    <td>${patient.mrn}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.diagnosis}</td>
+                `;
+
+                tableBody.appendChild(row);
+
+            });
+        }
+
+
+        function loadPatients() {
+
+            const request =
+                new XMLCclRequest();
+
+
+            request.onreadystatechange =
+                function() {
+
+                    if (
+                        request.readyState === 4 &&
+                        request.status === 200
+                    ) {
+
+                        const response =
+                            JSON.parse(
+                                request.responseText
+                            );
+
+
+                        const patients =
+                            response.reply.patients;
+
+
+                        renderPatients(
+                            patients
+                        );
+
+
+                        document.getElementById(
+                            "statusMessage"
+                        ).textContent =
+                            "Patients loaded successfully.";
+                    }
+
+                };
+
+
+            request.open(
+                "GET",
+                CCL_PROGRAM,
+                true
+            );
+
+
+            request.send(
+                "^MINE^"
+            );
+        }
+
+
+        loadPatients();
+
+    </script>
+
+</body>
+
+</html>
