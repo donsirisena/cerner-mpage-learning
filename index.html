@@ -242,7 +242,8 @@
        ========================= */
 
     table {
-    width: 100%;
+    width: auto;
+    min-width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
     }
@@ -1041,15 +1042,13 @@
         "th.resizable"
     );
 
-
 resizableHeaders.forEach(
-    function(header) {
+    function(header, columnIndex) {
 
         const handle =
             header.querySelector(
                 ".resize-handle"
             );
-
 
         handle.addEventListener(
             "mousedown",
@@ -1058,10 +1057,8 @@ resizableHeaders.forEach(
                 event.preventDefault();
                 event.stopPropagation();
 
-
                 const startX =
                     event.pageX;
-
 
                 const startWidth =
                     header.offsetWidth;
@@ -1076,13 +1073,48 @@ resizableHeaders.forEach(
                             startX
                         );
 
-
-                    if (newWidth > 70) {
-
-                        header.style.width =
-                            newWidth + "px";
-
+                    if (newWidth < 70) {
+                        return;
                     }
+
+                    header.style.width =
+                        newWidth + "px";
+
+                    header.style.minWidth =
+                        newWidth + "px";
+
+                    header.style.maxWidth =
+                        newWidth + "px";
+
+
+                    const rows =
+                        document.querySelectorAll(
+                            "#patientTableBody tr"
+                        );
+
+                    rows.forEach(
+                        function(row) {
+
+                            const cell =
+                                row.children[
+                                    columnIndex
+                                ];
+
+                            if (cell) {
+
+                                cell.style.width =
+                                    newWidth + "px";
+
+                                cell.style.minWidth =
+                                    newWidth + "px";
+
+                                cell.style.maxWidth =
+                                    newWidth + "px";
+
+                            }
+
+                        }
+                    );
 
                 }
 
@@ -1093,7 +1125,6 @@ resizableHeaders.forEach(
                         "mousemove",
                         resizeColumn
                     );
-
 
                     document.removeEventListener(
                         "mouseup",
@@ -1107,7 +1138,6 @@ resizableHeaders.forEach(
                     "mousemove",
                     resizeColumn
                 );
-
 
                 document.addEventListener(
                     "mouseup",
