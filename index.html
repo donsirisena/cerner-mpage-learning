@@ -209,7 +209,33 @@
         box-shadow:
             0 2px 8px rgba(0, 0, 0, 0.09);
     }
+.table-title {
+    padding: 12px 14px;
 
+    background-color: #f5f8fb;
+
+    border-bottom: 1px solid #d2dbe4;
+
+    color: #1f4e79;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#patientCount {
+    background-color: #2f75b5;
+    color: white;
+
+    padding: 4px 9px;
+    border-radius: 12px;
+
+    font-size: 12px;
+    font-weight: normal;
+}
 
     /* =========================
        PATIENT TABLE
@@ -426,44 +452,48 @@
         </div>
 
 
-        <div class="table-card">
+ <div class="table-card">
 
-            <table>
+    <div class="table-title">
+        <span>Patient Results</span>
+        <span id="patientCount"></span>
+    </div>
 
-                <thead>
+    <table>
 
-                    <tr>
+        <thead>
 
-                        <th
-                            id="nameHeader"
-                            class="sortable"
-                        >
-                            Patient Name ↕
-                        </th>
+            <tr>
 
-                        <th>
-                            MRN
-                        </th>
+                <th
+                    id="nameHeader"
+                    class="sortable"
+                >
+                    Patient Name ↕
+                </th>
 
-                        <th>
-                            Age
-                        </th>
+                <th>
+                    MRN
+                </th>
 
-                        <th>
-                            Diagnosis
-                        </th>
+                <th>
+                    Age
+                </th>
 
-                    </tr>
+                <th>
+                    Diagnosis
+                </th>
 
-                </thead>
+            </tr>
 
+        </thead>
 
-                <tbody id="patientTableBody">
-                </tbody>
+        <tbody id="patientTableBody">
+        </tbody>
 
-            </table>
+    </table>
 
-        </div>
+</div>
 
 
         <div
@@ -892,6 +922,13 @@
 
         loadPatients();
 
+     function renderPatients(patients) {
+
+    tableBody.innerHTML = "";
+     document.getElementById("patientCount").textContent =
+    patients.length + " patients";
+    
+    
     </script>
 
 </body>
