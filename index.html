@@ -565,7 +565,8 @@
         function renderPatients(patients) {
 
             tableBody.innerHTML = "";
-
+            document.getElementById("patientCount").textContent =
+                patients.length + " patients";
 
             if (patients.length === 0) {
 
@@ -922,11 +923,7 @@
 
         loadPatients();
 
-     function renderPatients(patients) {
 
-    tableBody.innerHTML = "";
-     document.getElementById("patientCount").textContent =
-    patients.length + " patients";
     
     
     </script>
