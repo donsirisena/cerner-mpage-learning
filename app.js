@@ -131,7 +131,10 @@
     const selectedDiagnosis = diagnosisFilter.value;
 
     const filteredPatients = data.patients.filter(function (patient) {
-      const matchesSearch = patient.name.toLowerCase().startsWith(searchText);
+      const normalizedMrn = patient.mrn == null ? "" : String(patient.mrn).trim().toLowerCase();
+      const matchesSearch =
+        patient.name.toLowerCase().includes(searchText) ||
+        normalizedMrn === searchText;
 
       const matchesDiagnosis =
         selectedDiagnosis === "all" || patient.diagnosis === selectedDiagnosis;

@@ -171,10 +171,15 @@ test("local mode loads real synthetic adapter without Cerner APIs and does not l
   );
 });
 
-test("search is case-insensitive prefix matching; diagnosis combines with search", async (t) => {
+test("name search is case-insensitive includes matching; diagnosis combines with search", async (t) => {
   const app = await dashboard(t, { patients: fabricated });
   app.event("searchBox", "input", " ALex ");
   assert.deepEqual(app.names(), ["Alex Sample", "Alexis Fiction"]);
+  app.event("searchBox", "input", " fICtion ");
+  assert.deepEqual(app.names(), ["Alexis Fiction"]);
+  app.event("searchBox", "input", "AMP");
+  assert.deepEqual(app.names(), ["Zed Example", "Alex Sample"]);
+  app.event("searchBox", "input", "Alex");
   app.event("diagnosisFilter", "change", "Asthma");
   assert.deepEqual(app.names(), ["Alexis Fiction"]);
   app.event("searchBox", "input", "missing");
@@ -340,4 +345,37 @@ test("local mode also loads its relative assets directly from file URLs", async 
   });
   assert.equal(dom.window.document.querySelectorAll(".patient-link").length, 4);
   assert.match(read("local.html"), /url=index.html\?mode=local/);
+});
+
+
+test("MRN search requires normalized exact equality and combines with diagnosis", async (t) => {
+  const app = await dashboard(t, { patients: fabricated });
+  app.event("searchBox", "input", " syn-02 ");
+  assert.deepEqual(app.names(), ["Alex Sample"]);
+  for (const query of ["SYN", "SYN-0", "02", "SYN-020"]) {
+    app.event("searchBox", "input", query);
+    assert.deepEqual(app.names(), [], query + " must not partially match MRNs");
+  }
+  app.event("searchBox", "input", "SYN-02");
+  app.event("diagnosisFilter", "change", "Asthma");
+  assert.deepEqual(app.names(), []);
+  app.event("diagnosisFilter", "change", "Diabetes");
+  assert.deepEqual(app.names(), ["Alex Sample"]);
+  app.event("diagnosisFilter", "change", "all");
+  app.event("searchBox", "input", "   ");
+  assert.deepEqual(app.names(), fabricated.map(patient => patient.name));
+});
+
+test("MRNs normalize stored spaces and case without losing leading zeroes", async (t) => {
+  const app = await dashboard(t, { patients: [
+    {...fabricated[0], mrn: "  sYn-01  "},
+    {...fabricated[1], mrn: "000123"},
+    {...fabricated[2], mrn: null}
+  ] });
+  app.event("searchBox", "input", " SYN-01 ");
+  assert.deepEqual(app.names(), ["Zed Example"]);
+  app.event("searchBox", "input", "123");
+  assert.deepEqual(app.names(), []);
+  app.event("searchBox", "input", "000123");
+  assert.deepEqual(app.names(), ["Alex Sample"]);
 });

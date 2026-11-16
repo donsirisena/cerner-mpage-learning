@@ -20,7 +20,7 @@ The fixture adapter asynchronously returns records dated today, 2, 7, 14, and 60
 days ago. The default date range shows four records. Date filtering is inclusive;
 use Refresh after changing dates. This local encounter-date filter demonstrates
 the controls; it does not reproduce or verify the absent CCL query's semantics.
-Search matches the beginning of a name, ignoring case and surrounding spaces.
+Search matches any part of a name, or an exact MRN, ignoring case and surrounding spaces.
 Diagnosis combines with search. Click Name or Diagnosis to toggle sorting.
 
 ## Cerner mode and hosting compatibility
