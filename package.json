@@ -1,0 +1,11 @@
+{
+  "name": "cerner-mpage-learning",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build:mpage": "node scripts/build-mpage.js"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  }
+}
